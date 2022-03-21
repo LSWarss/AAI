@@ -37,7 +37,6 @@ func newDistanceMatrix(matrixFile io.Reader) (DistanceMatrix, error) {
 	var reverted []int
 	for i := 0; i < rowNumber; i++ {
 		for j := 1 + i; j < rowNumber; j++ {
-			// fmt.Println(fmt.Sprintf("i: %d, j: %d, value: %d", i, j, slices[j][i]))
 			reverted = append(reverted, slices[j][i])
 		}
 		slices[i] = append(slices[i], reverted...)
@@ -51,7 +50,7 @@ func newDistanceMatrix(matrixFile io.Reader) (DistanceMatrix, error) {
 }
 
 func readRowNumber(scanner *bufio.Scanner) int {
-	scanner.Scan() // we scan first line of the file looking for row number
+	scanner.Scan() // we scan first line of the file looking for rows count
 	rows, err := strconv.Atoi(scanner.Text())
 
 	if err != nil {
