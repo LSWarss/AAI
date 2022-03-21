@@ -31,7 +31,26 @@ func NewCharactersMatrix(distanceMatrix distances.DistanceMatrix) CharactersMatr
 	}
 }
 
+type Scores []int
+
+func GetScore(distanceMatrix distances.DistanceMatrix, characterMatrix CharactersMatrix) Scores {
+	var scores Scores
+
+	for i := 0; i < characterMatrix.CharactersCount; i++ {
+		var tempSum int
+		for j := 0; j < characterMatrix.CharactersCount; j++ {
+			characterIndex := characterMatrix.Characters[i][j]
+			tempSum += distanceMatrix.Matrix[i][characterIndex]
+		}
+
+		scores = append(scores, tempSum)
+		tempSum = 0
+	}
+
+	return scores
+}
+
 func randIndex(min, max int) int {
 	rand.Seed(time.Now().UnixNano())
-	return rand.Intn(max-min+1) + min
+	return rand.Intn(max-min) + min
 }
