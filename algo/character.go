@@ -1,6 +1,7 @@
 package algo
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
 
@@ -13,13 +14,18 @@ type CharactersMatrix struct {
 }
 
 func NewCharactersMatrix(distanceMatrix distances.DistanceMatrix) CharactersMatrix {
+	rand.Seed(time.Now().UnixNano())
 	var characters [][]int
 
 	for i := 0; i < distanceMatrix.Rows; i++ {
 		var tempSlice []int
 		for j := 0; j < distanceMatrix.Rows; j++ {
-			tempSlice = append(tempSlice, randIndex(0, distanceMatrix.Rows))
+			tempSlice = append(tempSlice, j)
 		}
+
+		rand.Shuffle(len(tempSlice), func(i, j int) {
+			tempSlice[i], tempSlice[j] = tempSlice[j], tempSlice[i]
+		})
 
 		characters = append(characters, tempSlice)
 		tempSlice = nil
@@ -31,10 +37,8 @@ func NewCharactersMatrix(distanceMatrix distances.DistanceMatrix) CharactersMatr
 	}
 }
 
-type Scores []int
-
-func GetScore(distanceMatrix distances.DistanceMatrix, characterMatrix CharactersMatrix) Scores {
-	var scores Scores
+func GetScore(distanceMatrix distances.DistanceMatrix, characterMatrix CharactersMatrix) []int {
+	var scores []int
 
 	for i := 0; i < characterMatrix.CharactersCount; i++ {
 		var tempSum int
@@ -48,6 +52,26 @@ func GetScore(distanceMatrix distances.DistanceMatrix, characterMatrix Character
 	}
 
 	return scores
+}
+
+func GetBestCharacter(characterMatrix CharactersMatrix, scores []int) [][]int {
+	bestScore := scores[0]
+	var bestScoreIndex int
+
+	for i := 0; i < len(scores)-1; i++ {
+		fmt.Printf("BEST SCORE: %d ", bestScore)
+		fmt.Printf("SOCORE ON INDEX: %d, %d", bestScoreIndex, scores[bestScoreIndex])
+		fmt.Println()
+		if scores[i] < bestScore {
+			bestScoreIndex = i
+			bestScore = scores[i]
+		}
+	}
+
+	return [][]int{
+		characterMatrix.Characters[bestScoreIndex],
+		{bestScore},
+	}
 }
 
 func randIndex(min, max int) int {
