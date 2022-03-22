@@ -1,7 +1,6 @@
 package algo
 
 import (
-	"fmt"
 	"math/rand"
 	"time"
 
@@ -59,9 +58,6 @@ func GetBestCharacter(characterMatrix CharactersMatrix, scores []int) [][]int {
 	var bestScoreIndex int
 
 	for i := 0; i < len(scores)-1; i++ {
-		fmt.Printf("BEST SCORE: %d ", bestScore)
-		fmt.Printf("SOCORE ON INDEX: %d, %d", bestScoreIndex, scores[bestScoreIndex])
-		fmt.Println()
 		if scores[i] < bestScore {
 			bestScoreIndex = i
 			bestScore = scores[i]
@@ -77,4 +73,20 @@ func GetBestCharacter(characterMatrix CharactersMatrix, scores []int) [][]int {
 func randIndex(min, max int) int {
 	rand.Seed(time.Now().UnixNano())
 	return rand.Intn(max-min) + min
+}
+
+func GetTournamentSelection(characterMatrix CharactersMatrix) {
+	
+}
+
+func tournamentSelection(characterMatrix CharactersMatrix, selectivePressure int) int {
+	var bestCharacter int
+	for i := 0; i < selectivePressure; i++ {
+		character := characterMatrix.Characters[randIndex(0, characterMatrix.CharactersCount)][randIndex(0, characterMatrix.CharactersCount)]
+		if bestCharacter == 0 || character < bestCharacter {
+			bestCharacter = character
+		}
+	}
+
+	return bestCharacter
 }

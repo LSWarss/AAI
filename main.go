@@ -14,6 +14,8 @@ func main() {
 		log.Fatal(err)
 	}
 
+	log.Println(matrixes[2])
+
 	characters := algo.NewCharactersMatrix(matrixes[2])
 	// log.Println(matrixes[1])
 	log.Println(characters)
