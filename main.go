@@ -16,13 +16,9 @@ func main() {
 
 	log.Println(matrixes[2])
 
-	characters := algo.NewCharactersMatrix(matrixes[2])
-	// log.Println(matrixes[1])
-	log.Println(characters)
+	charsWithScores := algo.GetCharactersWithScoresMatrix(matrixes[1])
+	log.Println("Characters with scores:", charsWithScores.CharactersAndScores)
 
-	scores := algo.GetScore(matrixes[2], characters)
-	log.Println(scores)
-
-	bestScore := algo.GetBestCharacter(characters, scores)
-	log.Println("BEST SCORE:", bestScore)
+	tournament := algo.GetTournament(charsWithScores)
+	log.Println("Tournament", tournament)
 }

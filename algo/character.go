@@ -12,7 +12,38 @@ type CharactersMatrix struct {
 	Characters      [][]int
 }
 
-func NewCharactersMatrix(distanceMatrix distances.DistanceMatrix) CharactersMatrix {
+type CharactersWithScoresMatrix struct {
+	CharactersCount     int
+	CharactersAndScores [][][]int
+	BestCharacter       [][]int
+}
+
+func GetCharactersWithScoresMatrix(distanceMatrix distances.DistanceMatrix) CharactersWithScoresMatrix {
+	characters := getCharactersMatrix(distanceMatrix)
+	scores := getScore(distanceMatrix, characters)
+
+	var returnArray [][][]int
+
+	for i := 0; i < len(scores)-1; i++ {
+		returnArray = append(returnArray, [][]int{characters.Characters[i], {scores[i]}})
+	}
+
+	return CharactersWithScoresMatrix{
+		CharactersCount:     len(returnArray),
+		CharactersAndScores: returnArray,
+	}
+}
+
+func GetTournament(charWithScore CharactersWithScoresMatrix) [][][]int {
+	var tournament [][][]int
+	for i := 0; i < charWithScore.CharactersCount; i++ {
+		tournament = append(tournament, tournamentSelection(charWithScore, 3))
+	}
+
+	return tournament
+}
+
+func getCharactersMatrix(distanceMatrix distances.DistanceMatrix) CharactersMatrix {
 	rand.Seed(time.Now().UnixNano())
 	var characters [][]int
 
@@ -36,7 +67,7 @@ func NewCharactersMatrix(distanceMatrix distances.DistanceMatrix) CharactersMatr
 	}
 }
 
-func GetScore(distanceMatrix distances.DistanceMatrix, characterMatrix CharactersMatrix) []int {
+func getScore(distanceMatrix distances.DistanceMatrix, characterMatrix CharactersMatrix) []int {
 	var scores []int
 
 	for i := 0; i < characterMatrix.CharactersCount; i++ {
@@ -53,7 +84,7 @@ func GetScore(distanceMatrix distances.DistanceMatrix, characterMatrix Character
 	return scores
 }
 
-func GetBestCharacter(characterMatrix CharactersMatrix, scores []int) [][]int {
+func getBestCharacter(charMatrix CharactersMatrix, scores []int) [][]int {
 	bestScore := scores[0]
 	var bestScoreIndex int
 
@@ -65,25 +96,20 @@ func GetBestCharacter(characterMatrix CharactersMatrix, scores []int) [][]int {
 	}
 
 	return [][]int{
-		characterMatrix.Characters[bestScoreIndex],
+		charMatrix.Characters[bestScoreIndex],
 		{bestScore},
 	}
 }
 
-func randIndex(min, max int) int {
-	rand.Seed(time.Now().UnixNano())
-	return rand.Intn(max-min) + min
-}
+func tournamentSelection(charWithScore CharactersWithScoresMatrix, selectivePressure int) [][]int {
+	bestCharacter := [][]int{{0}, {0}}
+	selectSlice := selection(charWithScore.CharactersCount)
+	shuffle(selectSlice)
 
-func GetTournamentSelection(characterMatrix CharactersMatrix) {
-	
-}
-
-func tournamentSelection(characterMatrix CharactersMatrix, selectivePressure int) int {
-	var bestCharacter int
 	for i := 0; i < selectivePressure; i++ {
-		character := characterMatrix.Characters[randIndex(0, characterMatrix.CharactersCount)][randIndex(0, characterMatrix.CharactersCount)]
-		if bestCharacter == 0 || character < bestCharacter {
+		character := charWithScore.CharactersAndScores[selectSlice[i]]
+		score := character[1][0]
+		if bestCharacter[1][0] == 0 || score < bestCharacter[1][0] {
 			bestCharacter = character
 		}
 	}
