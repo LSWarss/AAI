@@ -116,3 +116,11 @@ func tournamentSelection(charWithScore CharactersWithScoresMatrix, selectivePres
 
 	return bestCharacter
 }
+
+func SinglePointCrossover(A, B []int) (A_new, B_new []int) {
+	x := randIndex(0, len(B))
+	A_new, B_new = A[:x], B[:x]
+	A_new = append(A_new, B[x:]...)
+	B_new = append(B_new, A[x:]...)
+	return A_new, B_new
+}
