@@ -19,7 +19,7 @@ type CharactersWithScoresMatrix struct {
 }
 
 func GetCharactersWithScoresMatrix(distanceMatrix distances.DistanceMatrix) CharactersWithScoresMatrix {
-	characters := getCharactersMatrix(distanceMatrix)
+	characters := getCharactersMatrix(distanceMatrix, 200)
 	scores := getScore(distanceMatrix, characters)
 
 	var returnArray [][][]int
@@ -43,11 +43,11 @@ func GetTournament(charWithScore CharactersWithScoresMatrix) [][][]int {
 	return tournament
 }
 
-func getCharactersMatrix(distanceMatrix distances.DistanceMatrix) CharactersMatrix {
+func getCharactersMatrix(distanceMatrix distances.DistanceMatrix, erasNumber int) CharactersMatrix {
 	rand.Seed(time.Now().UnixNano())
 	var characters [][]int
 
-	for i := 0; i < distanceMatrix.Rows; i++ {
+	for i := 0; i < erasNumber; i++ {
 		var tempSlice []int
 		for j := 0; j < distanceMatrix.Rows; j++ {
 			tempSlice = append(tempSlice, j)
@@ -62,7 +62,7 @@ func getCharactersMatrix(distanceMatrix distances.DistanceMatrix) CharactersMatr
 	}
 
 	return CharactersMatrix{
-		CharactersCount: distanceMatrix.Rows,
+		CharactersCount: erasNumber,
 		Characters:      characters,
 	}
 }
@@ -70,14 +70,20 @@ func getCharactersMatrix(distanceMatrix distances.DistanceMatrix) CharactersMatr
 func getScore(distanceMatrix distances.DistanceMatrix, characterMatrix CharactersMatrix) []int {
 	var scores []int
 
-	for i := 0; i < characterMatrix.CharactersCount; i++ {
+	for count := 0; count < characterMatrix.CharactersCount; count++ {
+		character := characterMatrix.Characters[count]
+		lastIndex := 0
 		var tempSum int
-		for j := 0; j < characterMatrix.CharactersCount; j++ {
-			characterIndex := characterMatrix.Characters[i][j]
-			tempSum += distanceMatrix.Matrix[i][characterIndex]
+
+		for i := 0; i < distanceMatrix.Rows; i++ {
+			characterIndex := character[i]
+			tempSum += distanceMatrix.Matrix[lastIndex][characterIndex]
+			lastIndex = characterIndex
 		}
+		tempSum += distanceMatrix.Matrix[lastIndex][character[0]]
 
 		scores = append(scores, tempSum)
+		lastIndex = 0
 		tempSum = 0
 	}
 

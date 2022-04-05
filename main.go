@@ -27,6 +27,12 @@ func main() {
 		characters = append(characters, tournament[i][0])
 	}
 
-	new_A, new_B := algo.SinglePointCrossover(characters[0], characters[1])
-	log.Println(new_A, new_B)
+	var crossover [][]int
+	for j := 0; j < len(characters)-1; j++ {
+		new_A, new_B := algo.SinglePointCrossover(characters[j], characters[j+1])
+		crossover = append(crossover, new_A)
+		crossover = append(crossover, new_B)
+	}
+
+	log.Println(crossover)
 }
