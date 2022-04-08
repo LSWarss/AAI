@@ -41,4 +41,8 @@ func main() {
 	}
 
 	log.Println("After inversion", crossover)
+
+	scores := algo.GetScore(matrixes[2], crossover)
+
+	log.Println("Scores", scores)
 }

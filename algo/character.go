@@ -67,6 +67,26 @@ func getCharactersMatrix(distanceMatrix distances.DistanceMatrix, erasNumber int
 	}
 }
 
+func GetScore(distanceMatrix distances.DistanceMatrix, matrix [][]int) (scores []int) {
+	for _, character := range matrix {
+		lastIndex := 0
+		var tempSum int
+
+		for i := 0; i < distanceMatrix.Rows; i++ {
+			distance := character[i]
+			tempSum += distanceMatrix.Matrix[lastIndex][distance]
+			lastIndex = distance
+		}
+		tempSum += distanceMatrix.Matrix[lastIndex][character[0]]
+
+		scores = append(scores, tempSum)
+		lastIndex = 0
+		tempSum = 0
+	}
+
+	return scores
+}
+
 func getScore(distanceMatrix distances.DistanceMatrix, characterMatrix CharactersMatrix) []int {
 	var scores []int
 
