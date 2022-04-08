@@ -34,5 +34,11 @@ func main() {
 		crossover = append(crossover, new_B)
 	}
 
-	log.Println(crossover)
+	log.Println("After crossover", crossover)
+
+	for i, v := range crossover {
+		crossover[i] = algo.InversionMutation(v)
+	}
+
+	log.Println("After inversion", crossover)
 }

@@ -130,3 +130,14 @@ func SinglePointCrossover(A, B []int) (A_new, B_new []int) {
 	B_new = append(B_new, A[x:]...)
 	return A_new, B_new
 }
+
+func InversionMutation(A []int) (A_new []int) {
+	x := randIndex(0, len(A))
+	y := randIndex(x, len(A))
+
+	A_new = append(A_new, A[y:]...)
+	A_new = append(A_new, A[x:y]...)
+	A_new = append(A_new, A[:x]...)
+
+	return A_new
+}
