@@ -18,12 +18,8 @@ type PopulationWithFitness struct {
 	BestIdividual    [][]int
 }
 
-var (
-	erasCount = 200
-)
-
-func CreatePopulationWithFitnessMatrix(distanceMatrix distances.DistanceMatrix) PopulationWithFitness {
-	population := CreatePopulationMatrix(distanceMatrix, erasCount)
+func CreatePopulationWithFitnessMatrix(distanceMatrix distances.DistanceMatrix, popSize int) PopulationWithFitness {
+	population := CreatePopulationMatrix(distanceMatrix, popSize)
 	populationFitness := CountFitness(distanceMatrix, population.Population)
 
 	var returnArray [][][]int
@@ -40,11 +36,11 @@ func CreatePopulationWithFitnessMatrix(distanceMatrix distances.DistanceMatrix) 
 
 // Creates population matrix by going through distanceMatrix
 // for given erasCount and randomly picking distances for individual.
-func CreatePopulationMatrix(distanceMatrix distances.DistanceMatrix, erasCount int) PopulationMatrix {
+func CreatePopulationMatrix(distanceMatrix distances.DistanceMatrix, popSize int) PopulationMatrix {
 	rand.Seed(time.Now().UnixNano())
 	var population [][]int
 
-	for i := 0; i < erasCount; i++ {
+	for i := 0; i < popSize; i++ {
 		tempIndividual := createSelectionArray(distanceMatrix.Rows)
 
 		rand.Shuffle(len(tempIndividual), func(i, j int) {
@@ -56,7 +52,7 @@ func CreatePopulationMatrix(distanceMatrix distances.DistanceMatrix, erasCount i
 	}
 
 	return PopulationMatrix{
-		PopulationSize: erasCount,
+		PopulationSize: popSize,
 		Population:     population,
 	}
 }
@@ -80,4 +76,27 @@ func CountFitness(distanceMatrix distances.DistanceMatrix, population [][]int) (
 	}
 
 	return fitness
+}
+
+func getBestIndividualIndex(fitness []int) int {
+	bestFitness := fitness[0]
+	var bestScoreIndex int
+
+	for i := 0; i < len(fitness)-1; i++ {
+		if fitness[i] < bestFitness {
+			bestScoreIndex = i
+			bestFitness = fitness[i]
+		}
+	}
+
+	return bestScoreIndex
+}
+
+func GetBestFitnessAndIndividual(distanceMatrix distances.DistanceMatrix, population [][]int) (bestIndividual []int, bestFitness int) {
+	fitness := CountFitness(distanceMatrix, population)
+	bestIndex := getBestIndividualIndex(fitness)
+	bestIndividual = population[bestIndex]
+	bestFitness = fitness[bestIndex]
+
+	return bestIndividual, bestFitness
 }
