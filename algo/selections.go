@@ -11,17 +11,17 @@ func MakeTournament(populationWithFitness PopulationWithFitness) [][][]int {
 }
 
 func tournamentSelection(populationWithFitness PopulationWithFitness, selectivePressure int) [][]int {
-	bestCharacter := [][]int{{0}, {0}}
+	bestIndividual := [][]int{{0}, {0}}
 	selectSlice := createSelectionArray(populationWithFitness.PopulationSize)
 	shuffle(selectSlice)
 
 	for i := 0; i < selectivePressure; i++ {
-		character := populationWithFitness.ScoredPopulation[selectSlice[i]]
-		score := character[1][0]
-		if bestCharacter[1][0] == 0 || score < bestCharacter[1][0] {
-			bestCharacter = character
+		individual := populationWithFitness.ScoredPopulation[selectSlice[i]]
+		score := individual[1][0]
+		if bestIndividual[1][0] == 0 || score < bestIndividual[1][0] {
+			bestIndividual = individual
 		}
 	}
 
-	return bestCharacter
+	return bestIndividual
 }
