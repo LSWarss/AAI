@@ -5,8 +5,8 @@ package algo
 // calculates splits in the individual array by len of it and mutationRange as end range.
 func inversionMutation(individual []int, mutationRate float64) (newIndividual []int) {
 	randRange := int(float64(len(individual)) * mutationRate)
-	x := randomInt(0, randRange)
-	y := randomInt(x, randRange)
+	x := RandomInt(0, randRange)
+	y := RandomInt(x, randRange)
 
 	newIndividual = append(newIndividual, individual[y:]...)
 	newIndividual = append(newIndividual, individual[x:y]...)

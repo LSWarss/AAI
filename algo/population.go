@@ -41,7 +41,7 @@ func CreatePopulationMatrix(distanceMatrix distances.DistanceMatrix, popSize int
 	var population [][]int
 
 	for i := 0; i < popSize; i++ {
-		tempIndividual := createSelectionArray(distanceMatrix.Rows)
+		tempIndividual := CreateSelectionArray(distanceMatrix.Rows)
 
 		rand.Shuffle(len(tempIndividual), func(i, j int) {
 			tempIndividual[i], tempIndividual[j] = tempIndividual[j], tempIndividual[i]

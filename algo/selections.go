@@ -12,8 +12,8 @@ func MakeTournament(populationWithFitness PopulationWithFitness) [][][]int {
 
 func tournamentSelection(populationWithFitness PopulationWithFitness, selectivePressure int) [][]int {
 	bestIndividual := [][]int{{0}, {0}}
-	selectSlice := createSelectionArray(populationWithFitness.PopulationSize)
-	shuffle(selectSlice)
+	selectSlice := CreateSelectionArray(populationWithFitness.PopulationSize)
+	Shuffle(selectSlice)
 
 	for i := 0; i < selectivePressure; i++ {
 		individual := populationWithFitness.ScoredPopulation[selectSlice[i]]
