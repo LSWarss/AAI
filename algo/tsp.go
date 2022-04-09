@@ -28,7 +28,7 @@ func nextGeneration(distancesMatrix distances.DistanceMatrix, population [][]int
 	scoredPopulation := createPopulationWithFitness(population, populationFitness)
 	selection := MakeTournament(scoredPopulation)
 	populationFromSelection := getPopulationFromSelection(selection)
-	breed := MakeCrossover(populationFromSelection)
+	breed := MakePMXCrossover(populationFromSelection)
 	nextGeneration = MakeInversionMutation(breed, mutationRate)
 
 	return nextGeneration
@@ -41,7 +41,8 @@ func GeneticAlgorithm(distancesMatrix distances.DistanceMatrix, populationSize i
 		fmt.Println("Generation number: ", i)
 		initialPop.Population = nextGeneration(distancesMatrix, initialPop.Population, mutationRate)
 		bestIndividual, bestScore := GetBestFitnessAndIndividual(distancesMatrix, initialPop.Population)
-		fmt.Println("Scores: ", bestIndividual, bestScore)
+		fmt.Println("Best fitness: ", bestScore)
+		fmt.Println("Best individual: ", bestIndividual)
 	}
 
 	return GetBestFitnessAndIndividual(distancesMatrix, initialPop.Population)

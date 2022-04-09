@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -14,6 +15,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	bestIndividual, bestScore := algo.GeneticAlgorithm(matrixes[1], 200, 0.05, 20)
-	print(bestIndividual, bestScore)
+	bestIndividual, bestScore := algo.GeneticAlgorithm(matrixes[1], 500, 0.05, 497)
+	fmt.Println("BI: ", bestIndividual)
+	fmt.Println("BS: ", bestScore)
 }
