@@ -16,10 +16,10 @@ func main() {
 
 	log.Println(matrixes[2])
 
-	charsWithScores := algo.GetCharactersWithScoresMatrix(matrixes[2])
-	log.Println("Characters with scores:", charsWithScores.CharactersAndScores)
+	charsWithScores := algo.CreatePopulationWithFitnessMatrix(matrixes[2])
+	log.Println("Characters with scores:", charsWithScores.ScoredPopulation)
 
-	tournament := algo.GetTournament(charsWithScores)
+	tournament := algo.MakeTournament(charsWithScores)
 	log.Println("Tournament", tournament)
 
 	var characters [][]int
@@ -37,12 +37,12 @@ func main() {
 	log.Println("After crossover", crossover)
 
 	for i, v := range crossover {
-		crossover[i] = algo.InversionMutation(v)
+		crossover[i] = algo.InversionMutation(v, 0.3)
 	}
 
 	log.Println("After inversion", crossover)
 
-	scores := algo.GetScore(matrixes[2], crossover)
+	scores := algo.CountFitness(matrixes[2], crossover)
 
 	log.Println("Scores", scores)
 }
