@@ -61,8 +61,10 @@ func pmx(individualA, individualB []int) (individualC []int) {
 
 func MakePMXCrossover(population [][]int) (crossedOverPop [][]int) {
 	for j := 0; j < len(population)-1; j++ {
-		child := pmx(population[j], population[j+1])
-		crossedOverPop = append(crossedOverPop, child)
+		firstChild := pmx(population[j], population[j+1])
+		secondChild := pmx(population[j+1], population[j])
+		crossedOverPop = append(crossedOverPop, firstChild)
+		crossedOverPop = append(crossedOverPop, secondChild)
 	}
 
 	return crossedOverPop

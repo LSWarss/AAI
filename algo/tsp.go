@@ -23,15 +23,15 @@ func getPopulationFromSelection(selection [][][]int) (population [][]int) {
 	return population
 }
 
-func nextGeneration(distancesMatrix distances.DistanceMatrix, population [][]int, mutationRate float64) (nextGeneration [][]int) {
+func nextGeneration(distancesMatrix distances.DistanceMatrix, population [][]int, mutationRate float64) [][]int {
 	populationFitness := CountFitness(distancesMatrix, population)
 	scoredPopulation := createPopulationWithFitness(population, populationFitness)
 	selection := MakeTournament(scoredPopulation)
 	populationFromSelection := getPopulationFromSelection(selection)
 	breed := MakePMXCrossover(populationFromSelection)
-	nextGeneration = MakeInversionMutation(breed, mutationRate)
+	Mutate(population)
 
-	return nextGeneration
+	return breed
 }
 
 func GeneticAlgorithm(distancesMatrix distances.DistanceMatrix, populationSize int, mutationRate float64, generations int) (bestIndividual []int, bestScore int) {

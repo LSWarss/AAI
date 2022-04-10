@@ -11,6 +11,11 @@ func RandomInt(min, max int) int {
 	return rand.Intn(max-min) + min
 }
 
+func RandomFloat(min, max float64) float64 {
+	rand.Seed(time.Now().UnixNano())
+	return (rand.Float64() * (max - min)) + min
+}
+
 // Creates selection array with length of given len
 // and fills it with number from 0 to the lenght.
 func CreateSelectionArray(len int) []int {
