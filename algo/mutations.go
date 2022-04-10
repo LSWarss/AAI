@@ -1,10 +1,10 @@
 package algo
 
-func Mutate(population [][]int) {
+func Mutate(population [][]int, mutationRate float64) {
 
 	for _, individual := range population {
 		if shouldMutate() {
-			individual = inversionMutation(individual, 0.03)
+			individual = inversionMutation(individual, mutationRate)
 		} else {
 			transposonMutation(individual)
 		}
