@@ -29,7 +29,7 @@ func nextGeneration(distancesMatrix distances.DistanceMatrix, population [][]int
 	selection := MakeTournament(scoredPopulation)
 	populationFromSelection := getPopulationFromSelection(selection)
 	breed := MakePMXCrossover(populationFromSelection)
-	Mutate(population)
+	Mutate(population, mutationRate)
 
 	return breed
 }
