@@ -15,7 +15,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	bestIndividual, bestScore := algo.GeneticAlgorithm(matrixes[1], 500, 0.05, 497)
+	bestIndividual, bestScore := algo.GeneticAlgorithm(matrixes[1], 200, 0.02, 20)
 	fmt.Println("BI: ", bestIndividual)
 	fmt.Println("BS: ", bestScore)
 }
