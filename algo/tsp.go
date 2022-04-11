@@ -34,16 +34,22 @@ func nextGeneration(distancesMatrix distances.DistanceMatrix, population [][]int
 	return breed
 }
 
-func GeneticAlgorithm(distancesMatrix distances.DistanceMatrix, populationSize int, mutationRate float64, generations int) (bestIndividual []int, bestScore int) {
+type TSPResult struct {
+	BestIndividual []int
+	BestScore      int
+}
+
+func GeneticAlgorithm(distancesMatrix distances.DistanceMatrix, populationSize int, mutationRate float64, generations int) TSPResult {
 	initialPop := CreatePopulationMatrix(distancesMatrix, populationSize)
 
 	for i := 0; i <= generations; i++ {
 		fmt.Println("Generation number: ", i)
 		initialPop.Population = nextGeneration(distancesMatrix, initialPop.Population, mutationRate)
-		bestIndividual, bestScore := GetBestFitnessAndIndividual(distancesMatrix, initialPop.Population)
-		fmt.Println("Best fitness: ", bestScore)
-		fmt.Println("Best individual: ", bestIndividual)
 	}
 
-	return GetBestFitnessAndIndividual(distancesMatrix, initialPop.Population)
+	bestIndividual, bestScore := GetBestFitnessAndIndividual(distancesMatrix, initialPop.Population)
+	return TSPResult{
+		BestIndividual: bestIndividual,
+		BestScore:      bestScore,
+	}
 }
