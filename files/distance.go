@@ -27,8 +27,13 @@ func newDistanceMatrix(matrixFile io.Reader) (DistanceMatrix, error) {
 		text := scanner.Text()                     // assign the text to variable
 		numbersStrings := strings.Split(text, " ") // split text in to slice of stringss
 		var numbers []int
-		for _, number := range numbersStrings { // go through slice of strings
+		for i, number := range numbersStrings { // go through slice of strings
 			number, _ := strconv.Atoi(number) // convert numberString to int
+			if number == 0 {
+				if i > 0 && numbers[i-1] == 0 {
+					break
+				}
+			}
 			numbers = append(numbers, number) // append it to the clean slice of ints
 		}
 		slices = append(slices, numbers) // append numbers slice to slice of slices
