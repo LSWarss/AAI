@@ -38,7 +38,7 @@ func main() {
 	// 	}
 	// }
 	// close(results)
-	bestOfAll := algo.GeneticAlgorithm(matrixes[3], 250, 0.05, 500000)
+	bestOfAll := algo.GeneticAlgorithm(matrixes[4], 250, 0.05, 500000)
 	fmt.Println("--------")
 	fmt.Println("BOA - BI", bestOfAll.BestIndividual)
 	fmt.Println("BOA - BS", bestOfAll.BestScore)
