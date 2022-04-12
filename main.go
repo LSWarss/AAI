@@ -15,35 +15,30 @@ func main() {
 		log.Fatal(err)
 	}
 
-	var bestOfAll algo.TSPResult = algo.TSPResult{
-		BestIndividual: []int{},
-		BestScore:      5000000000,
-	}
+	// jobs := make(chan distances.DistanceMatrix, 5)
+	// results := make(chan algo.TSPResult, 5)
 
-	jobs := make(chan distances.DistanceMatrix, 100)
-	results := make(chan algo.TSPResult, 100)
+	// for i := 0; i < 5; i++ {
+	// 	go worker(jobs, results)
+	// }
 
-	for i := 0; i < 10; i++ {
-		go worker(jobs, results)
-	}
+	// for j := 0; j < 5; j++ {
+	// 	jobs <- matrixes[1]
+	// }
+	// close(jobs)
 
-	for j := 0; j < 100; j++ {
-		jobs <- matrixes[1]
-	}
-	close(jobs)
+	// for r := 0; r < 5; r++ {
+	// 	result := <-results
 
-	for r := 0; r < 100; r++ {
-		result := <-results
+	// 	fmt.Println("BI", result.BestIndividual)
+	// 	fmt.Println("BS", result.BestScore)
 
-		fmt.Println("BI", result.BestIndividual)
-		fmt.Println("BS", result.BestScore)
-
-		if result.BestScore < bestOfAll.BestScore {
-			bestOfAll = result
-		}
-	}
-	close(results)
-
+	// 	if result.BestScore < bestOfAll.BestScore {
+	// 		bestOfAll = result
+	// 	}
+	// }
+	// close(results)
+	bestOfAll := algo.GeneticAlgorithm(matrixes[3], 250, 0.05, 500000)
 	fmt.Println("--------")
 	fmt.Println("BOA - BI", bestOfAll.BestIndividual)
 	fmt.Println("BOA - BS", bestOfAll.BestScore)
@@ -51,6 +46,6 @@ func main() {
 
 func worker(jobs <-chan distances.DistanceMatrix, results chan<- algo.TSPResult) {
 	for n := range jobs {
-		results <- algo.GeneticAlgorithm(n, 250, 0.05, 100)
+		results <- algo.GeneticAlgorithm(n, 250, 0.05, 500000)
 	}
 }

@@ -28,10 +28,15 @@ func nextGeneration(distancesMatrix distances.DistanceMatrix, population [][]int
 	scoredPopulation := createPopulationWithFitness(population, populationFitness)
 	selection := MakeTournament(scoredPopulation)
 	populationFromSelection := getPopulationFromSelection(selection)
-	breed := MakePMXCrossover(populationFromSelection)
-	Mutate(population, mutationRate)
+	pick := RandomFloat(0, 1)
 
-	return breed
+	if pick < 0.75 {
+		populationFromSelection = MakePMXCrossover(populationFromSelection)
+	}
+
+	Mutate(populationFromSelection, mutationRate)
+
+	return populationFromSelection
 }
 
 type TSPResult struct {
@@ -43,11 +48,15 @@ func GeneticAlgorithm(distancesMatrix distances.DistanceMatrix, populationSize i
 	initialPop := CreatePopulationMatrix(distancesMatrix, populationSize)
 
 	for i := 0; i <= generations; i++ {
-		fmt.Println("Generation number: ", i)
 		initialPop.Population = nextGeneration(distancesMatrix, initialPop.Population, mutationRate)
+		bestIndividual, bestScore := GetBestFitnessAndIndividual(distancesMatrix, initialPop.Population)
+		fmt.Println("G: ", i)
+		fmt.Println("BI: ", bestIndividual)
+		fmt.Println("BS: ", bestScore)
 	}
 
 	bestIndividual, bestScore := GetBestFitnessAndIndividual(distancesMatrix, initialPop.Population)
+
 	return TSPResult{
 		BestIndividual: bestIndividual,
 		BestScore:      bestScore,

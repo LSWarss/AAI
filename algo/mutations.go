@@ -2,11 +2,9 @@ package algo
 
 func Mutate(population [][]int, mutationRate float64) {
 
-	for _, individual := range population {
-		if shouldMutate() {
-			individual = inversionMutation(individual, mutationRate)
-		} else {
-			transposonMutation(individual)
+	for i, individual := range population {
+		if shouldMutate(mutationRate) {
+			population[i] = inversionMutation(individual)
 		}
 	}
 }
@@ -14,10 +12,9 @@ func Mutate(population [][]int, mutationRate float64) {
 // Inversion Mutation algorithm.
 // Takes in array of individuals from population,
 // calculates splits in the individual array by len of it and mutationRange as end range.
-func inversionMutation(individual []int, mutationRate float64) (newIndividual []int) {
-	randRange := int(float64(len(individual)) * mutationRate)
-	x := RandomInt(0, randRange)
-	y := RandomInt(x, randRange)
+func inversionMutation(individual []int) (newIndividual []int) {
+	x := RandomInt(0, len(individual))
+	y := RandomInt(x, len(individual))
 
 	newIndividual = append(newIndividual, individual[y:]...)
 	newIndividual = append(newIndividual, individual[x:y]...)
@@ -46,8 +43,8 @@ func transposonMutation(individual []int) {
 	swapGenes(individual, first, second)
 }
 
-func shouldMutate() bool {
+func shouldMutate(mutationRate float64) bool {
 	pick := RandomFloat(0, 1)
 
-	return pick < 0.66
+	return pick < mutationRate
 }

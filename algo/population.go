@@ -60,18 +60,14 @@ func CreatePopulationMatrix(distanceMatrix distances.DistanceMatrix, popSize int
 // Counts fitness for given population agains given Distance Matrix
 func CountFitness(distanceMatrix distances.DistanceMatrix, population [][]int) (fitness []int) {
 	for _, individual := range population {
-		lastIndex := 0
-		var tempSum int
+		tempSum := 0
 
-		for i := 0; i < distanceMatrix.Rows; i++ {
-			distance := individual[i]
-			tempSum += distanceMatrix.Matrix[lastIndex][distance]
-			lastIndex = distance
+		for i := 0; i < len(individual)-1; i++ {
+			tempSum += distanceMatrix.Matrix[individual[i]][individual[i+1]]
 		}
-		tempSum += distanceMatrix.Matrix[lastIndex][individual[0]]
+		tempSum += distanceMatrix.Matrix[individual[len(individual)-1]][individual[0]]
 
 		fitness = append(fitness, tempSum)
-		lastIndex = 0
 		tempSum = 0
 	}
 
